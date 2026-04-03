@@ -1,0 +1,15 @@
+# Frontend (e-commerce)
+e-commerce/node_modules/
+e-commerce/.next/
+e-commerce/.env*
+e-commerce/build/
+
+# Backend (server)
+server/node_modules/
+server/dist/
+server/.env
+
+# General
+.DS_Store
+*.pem
+npm-debug.log*
