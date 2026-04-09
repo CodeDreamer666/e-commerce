@@ -16,7 +16,7 @@ const app = express();
 const PORT = 8000;
 
 app.use(cors({
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", "e-commerce-1-eight-kappa.vercel.app"],
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"]
 }));
