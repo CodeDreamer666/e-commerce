@@ -1,5 +1,4 @@
 import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
 import { z } from "zod";
 import { expiredSchema } from "@/app/schemas/backendResponse";
 
@@ -27,8 +26,6 @@ export default async function fetchAndValidateData<T>(
             next?: { revalidate: number }
         };
 
-        let cookieStore = await cookies();
-
         if (option === "SSR") {
             renderingDataMethod = { cache: "no-store" }
         } else if (option === "SSG") {
@@ -49,28 +46,6 @@ export default async function fetchAndValidateData<T>(
         let json: unknown = await res.json();
 
         if (res.status === 401) redirect("/unauthorized");
-
-        if (res.status === 403) {
-            const result = expiredSchema.safeParse(json);
-
-            if (result.success && result.data.error_code === "EXPIRED_ACCESS_TOKEN") {
-
-                await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/refres`, { 
-                    method: "POST",
-                });
-
-                res = await fetch(url, {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Cookie: cookieStore.toString()
-                    },
-                    ...renderingDataMethod,
-                });
-
-                json = await res.json();
-            }
-        }
 
         if (!res.ok) throw new Error(`failed with status ${res.status}`);
 
