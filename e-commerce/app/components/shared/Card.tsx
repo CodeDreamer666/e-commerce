@@ -1,23 +1,20 @@
-import Link from "next/link"
-import React from "react"
+import Link from "next/link";
+import React from "react";
+import { AlertCircle, ArrowLeft } from "lucide-react"; // Optional: npm i lucide-react
 
 type CardProps = {
-    heading?: string
-    text?: string
-    children?: React.ReactNode
-    className?: string
-    buttonOneText?: string
-    buttonOnePath?: string
-    buttonTwoText?: string
-    buttonTwoPath?: string
-    onClick?: () => void
-}
+    heading?: string;
+    text?: string;
+    buttonOneText?: string;
+    buttonOnePath?: string;
+    buttonTwoText?: string;
+    buttonTwoPath?: string;
+    onClick?: () => void;
+};
 
 export default function Card({
     heading,
     text,
-    children,
-    className = "",
     buttonOneText,
     buttonOnePath,
     buttonTwoText,
@@ -25,53 +22,55 @@ export default function Card({
     onClick
 }: CardProps) {
     return (
-        <section className="min-h-[80vh] flex items-center justify-center bg-gray-50 px-4">
-            <div
-                className={`w-full max-w-100 border border-gray-200 rounded-lg shadow-lg p-6 bg-white ${className}`}
-            >
+        // Centers perfectly in the viewport
+        <section className="fixed inset-0 flex items-center justify-center bg-slate-50/50 backdrop-blur-sm px-4 z-50">
+            <div className="w-full max-w-md overflow-hidden bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-red-100 p-8 text-center transition-all animate-in fade-in zoom-in duration-300">
+                
+                {/* Error Icon Header */}
+                <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-red-50">
+                    <AlertCircle className="h-8 w-8 text-red-500" />
+                </div>
 
-                <h2 className="text-xl font-bold text-gray-800 mb-2">
-                    {heading}
+                <h2 className="text-2xl font-bold text-slate-900 tracking-tight mb-3">
+                    {heading || "Something went wrong"}
                 </h2>
 
-
-                <p className="text-gray-600 mb-4">
-                    {text}
+                <p className="text-slate-500 leading-relaxed mb-8">
+                    {text || "We couldn't process that request. Please check your connection or try again."}
                 </p>
 
-                {children}
-
-                {(buttonOneText || buttonTwoText) && (
-                    <div className="flex flex-col gap-2 mt-6">
-                        {buttonOnePath && buttonOneText && (
+                <div className="flex flex-col gap-3">
+                    {/* Primary Button */}
+                    {buttonOneText && (
+                        buttonOnePath ? (
                             <Link
                                 href={buttonOnePath}
-                                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-center"
+                                className="w-full inline-flex items-center justify-center px-6 py-3.5 bg-slate-900 text-white font-semibold rounded-xl hover:bg-slate-800 active:scale-[0.98] transition-all shadow-sm"
                             >
                                 {buttonOneText}
                             </Link>
-                        )}
-
-                        {!buttonOnePath && buttonOneText && (
+                        ) : (
                             <button
                                 onClick={onClick}
-                                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                                className="w-full inline-flex items-center justify-center px-6 py-3.5 bg-slate-900 text-white font-semibold rounded-xl hover:bg-slate-800 active:scale-[0.98] transition-all shadow-sm"
                             >
                                 {buttonOneText}
                             </button>
-                        )}
+                        )
+                    )}
 
-                        {buttonTwoPath && buttonTwoText && (
-                            <Link
-                                href={buttonTwoPath}
-                                className="flex-1 px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-400 transition-colors text-center"
-                            >
-                                {buttonTwoText}
-                            </Link>
-                        )}
-                    </div>
-                )}
+                    {/* Secondary/Ghost Button */}
+                    {buttonTwoText && buttonTwoPath && (
+                        <Link
+                            href={buttonTwoPath}
+                            className="w-full inline-flex items-center justify-center px-6 py-3 text-slate-600 font-medium rounded-xl hover:bg-slate-100 transition-colors"
+                        >
+                            <ArrowLeft className="mr-2 h-4 w-4" />
+                            {buttonTwoText}
+                        </Link>
+                    )}
+                </div>
             </div>
         </section>
-    )
+    );
 }

@@ -161,8 +161,8 @@ export default function ShippingOption() {
                         onChange={(event) => setDeliveryMethod(event.target.value)}
                         selectionText={[
                             { text: "Select your shipping method", value: "" },
-                            { text: "Standard Shipping (3-5 days) $5", value: "standard" },
-                            { text: "Express Shipping (1-2 days) $12", value: "express" }
+                            { text: "Standard Shipping (3-5 days) $5", value: "Standard" },
+                            { text: "Express Shipping (1-2 days) $12", value: "Express" }
                         ]}
                     />
 

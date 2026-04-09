@@ -42,15 +42,15 @@ export default async function placeOrder(req: AuthRequest, res: Response) {
         country,
     } = checkoutSessions.rows[0]
 
-    let totalPrice = delivery_method === "standard" ? 5 : 12
+    let totalPrice = delivery_method === "Standard" ? 5 : 12
 
     for (const { total_price } of checkoutItems.rows) {
-        totalPrice += total_price
+        totalPrice += Number(total_price)
     }
 
     const orderId = await pool.query(
         "INSERT INTO orders (user_id, full_name, phone_number, country, city, address, postal_code, delivery_method, payment_method, total_price) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id",
-        [req.user.userId, full_name, phone_number, country, city, address, postal_code, delivery_method, payment_method, totalPrice]
+        [req.user.userId, full_name, phone_number, country, city, address, postal_code, delivery_method, payment_method, totalPrice.toFixed(2)]
     );
 
     for (const { total_price, product_id, title, quantity, image } of checkoutItems.rows) {

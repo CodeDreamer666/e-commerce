@@ -136,7 +136,7 @@ export default function ProductIdClient({ productIdData, reviewsData }: ProductI
                 </div>
 
                 {reviewsData ? (
-                    <>
+                    <div className="max-w-260 mx-auto">
                         <h2 className="text-lg font-bold mt-4">Reviews: </h2>
                         <ul className="w-full flex flex-col gap-4 mt-2 mb-6 lg:grid lg:grid-cols-2">
                             {reviewsData.map(({ rating, date, comment, id, reviewer_name }) => {
@@ -159,7 +159,7 @@ export default function ProductIdClient({ productIdData, reviewsData }: ProductI
                                 )
                             })}
                         </ul>
-                    </>
+                    </div>
                 ) : <p className="font-semibold mt-4 text-[20px]">No reviews available</p>}
 
                 <button

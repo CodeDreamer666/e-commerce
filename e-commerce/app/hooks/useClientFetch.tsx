@@ -4,7 +4,7 @@ import { expiredSchema } from "@/app/schemas/backendResponse"
 import useErrorHandling from "./useErrorHandling"
 import { z } from "zod"
 
-type UrlCategory = "auth" | "products" | "reviews" | "cart" | "checkout"
+type UrlCategory = "auth" | "products" | "reviews" | "cart" | "checkout" | "orders"
 type UrlBaseForm = `http://localhost:8000/${UrlCategory}`
 type Url = `${UrlBaseForm}${string}`
 
@@ -65,8 +65,6 @@ export default function useClientFetch<T, BodyType>(
                 }
 
                 const result = idealSchema.safeParse(json);
-
-                console.log(result.data)
 
                 if (!result.success) {
                     setData(null)

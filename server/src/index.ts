@@ -6,6 +6,7 @@ import { productsRouter } from "./routes/products.js";
 import { reviewsRouter } from "./routes/reviews.js";
 import { cartRouter } from "./routes/cart.js";
 import { checkoutRouter } from "./routes/checkout.js";
+import { ordersRouter } from "./routes/orders.js";
 import errorHandler from "./middlewares/errorHandler.js";
 import dotenv from "dotenv";
 
@@ -32,6 +33,7 @@ app.use("/products", productsRouter);
 app.use("/reviews", reviewsRouter);
 app.use("/cart", cartRouter);
 app.use("/checkout", checkoutRouter);
+app.use("/orders", ordersRouter)
 
 app.use(errorHandler);
 

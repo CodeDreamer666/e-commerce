@@ -35,7 +35,7 @@ export default function ShopClient({ data }: { data: FullProductData }) {
                 </button>
             </section>
 
-            <section className="py-4 flex flex-col items-center justify-center md:grid md:grid-cols-2 md:p-8 md:gap-2 md:mx-auto md:max-w-250 lg:grid-cols-3 lg:max-w-400">
+            <section className="py-4 flex flex-col items-center justify-center md:grid md:grid-cols-2 md:p-8 md:gap-2 md:mx-auto md:max-w-250 lg:grid-cols-3 lg:max-w-7xl">
 
                 {filterShopData.map(({ image, title, price, discounted_percentage, id }) => {
                     return (

@@ -10,7 +10,7 @@ export default function Navbar() {
 
     return (
         <nav className="w-full bg-white shadow-sm rounded-md overflow-x-auto mt-16">
-            <ul className="flex items-center justify-around w-full py-3 gap-4 text-sm font-medium text-gray-600">
+            <ul className="flex items-center justify-around w-full py-3 gap-4 text-sm max-w-6xl mx-auto font-medium text-gray-600">
 
                 <CurrentStep
                     currentStep={currentStep}

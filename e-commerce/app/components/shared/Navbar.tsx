@@ -161,7 +161,7 @@ export default function Navbar() {
             />
             <nav className="z-50 h-16 fixed w-full bg-[linear-gradient(to_bottom_right,#2895d7,#53AADF,#2895d7)] flex items-center shadow-md px-4">
                 {/* Main Container */}
-                <div className="flex w-full justify-between items-center">
+                <div className="flex w-full justify-between items-center max-w-6xl mx-auto">
 
                     {/* Brand / Welcome Message */}
                     <p className="font-semibold text-lg text-black">

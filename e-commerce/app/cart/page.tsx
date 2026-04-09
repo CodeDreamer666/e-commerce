@@ -263,7 +263,7 @@ export default function CartClient() {
 
     return (
 
-        <section className="bg-[linear-gradient(to_bottom_right,#ffffff,#f5f5f5)] w-full mt-16 px-4 pb-6 pt-4">
+        <section className="bg-[linear-gradient(to_bottom_right,#ffffff,#f5f5f5)] w-full mt-16 px-4 pb-6 pt-4 max-w-6xl mx-auto">
 
             <StatusMessage
                 isSuccess={isSuccess}
