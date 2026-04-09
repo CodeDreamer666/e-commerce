@@ -5,7 +5,7 @@ import { expiredSchema } from "@/app/schemas/backendResponse";
 
 type UrlCategory = "auth" | "products" | "reviews" | "cart" | "checkout"
 
-type UrlBaseForm = `http://localhost:8000/${UrlCategory}`
+type UrlBaseForm = `${string}/${UrlCategory}`
 
 type Url = `${UrlBaseForm}${string}`
 
@@ -55,7 +55,7 @@ export default async function fetchAndValidateData<T>(
 
             if (result.success && result.data.error_code === "EXPIRED_ACCESS_TOKEN") {
 
-                await fetch("http://localhost:3000/api/auth/refresh", { 
+                await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/refres`, { 
                     method: "POST",
                 });
 

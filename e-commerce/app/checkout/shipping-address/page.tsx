@@ -24,7 +24,7 @@ export default function ShippingAddress() {
     const { setRefresh } = useRefresh()
 
     const { data, error } = useClientFetch(
-        "http://localhost:8000/checkout/shipping-address",
+        `${process.env.NEXT_PUBLIC_API_URL}/checkout/shipping-address`,
         "GET",
         shippingAddress
     )
@@ -70,7 +70,7 @@ export default function ShippingAddress() {
 
         try {
             const res = await sendRequestAndGetResponse({
-                url: "http://localhost:8000/checkout/shipping-address",
+                url: `${process.env.NEXT_PUBLIC_API_URL}/checkout/shipping-address`,
                 method: "POST",
                 body: {
                     full_name,

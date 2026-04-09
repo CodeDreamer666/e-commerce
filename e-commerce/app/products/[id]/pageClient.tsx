@@ -1,10 +1,8 @@
 "use client"
 import { useState } from "react";
-
 import StatusMessage from "@/app/components/shared/StatusMessageClient";
 import useStatusMessage from "@/app/hooks/useStatusMessage";
 import sendRequestAndGetResponse from "@/app/lib/sendRequest";
-
 import type { ProductIdData } from "@/app/schemas/productDetailData";
 import type { ReviewsData } from "@/app/schemas/reviewData";
 
@@ -44,7 +42,7 @@ export default function ProductIdClient({ productIdData, reviewsData }: ProductI
     async function addCart() {
         const result = await sendRequestAndGetResponse({
             method: "POST",
-            url: `http://localhost:8000/cart/${id}`,
+            url: `${process.env.NEXT_PUBLIC_API_URL}/cart/${id}`,
             body: {
                 unit_price: discounted_price,
                 quantity: productQuantity,

@@ -14,13 +14,13 @@ export default async function ProductId({ params }: Params) {
     const { id } = await params;
 
     const productIdData = await fetchAndValidateData({
-        url: `http://localhost:8000/products/${Number(id)}`,
+        url: `${process.env.NEXT_PUBLIC_API_URL}/products/${Number(id)}`,
         idealSchema: productIdDataSchema,
         option: "ISR"
     });
 
     const reviewsData = await fetchAndValidateData({
-        url: `http://localhost:8000/reviews/${Number(id)}`,
+        url: `${process.env.NEXT_PUBLIC_API_URL}/reviews/${Number(id)}`,
         idealSchema: reviewsDataSchema,
         option: "ISR"
     });

@@ -11,6 +11,7 @@ import CartCheckbox from "../components/cart/CartCheckbox";
 import type { CartData } from "@/app/schemas/cartData";
 import { cartDataSchema } from "@/app/schemas/cartData";
 import { expiredSchema } from "@/app/schemas/backendResponse";
+import useClientFetch from "../hooks/useClientFetch";
 
 export default function CartClient() {
     const [cartData, setCartData] = useState<CartData>([]);
@@ -37,63 +38,17 @@ export default function CartClient() {
         totalPrice = cartData.reduce((acc, item) => acc + Number((item.is_selected ? item.total_price : 0)), 0)
     }
 
+    const { data, error } = useClientFetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/cart`,
+        "GET",
+        cartDataSchema
+    )
+
     useEffect(() => {
-        async function fetchCartData() {
-            try {
-                let res = await fetch("http://localhost:8000/cart", {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    cache: "no-store",
-                    credentials: "include"
-                });
-
-                let json: unknown = await res.json();
-
-                if (res.status === 403) {
-                    const result = expiredSchema.safeParse(json);
-
-                    if (result.success && result.data.error_code === "EXPIRED_ACCESS_TOKEN") {
-
-                        await fetch("http://localhost:8000/auth/refresh", {
-                            method: "POST",
-                            credentials: "include"
-                        });
-
-                        router.refresh();
-
-                        res = await fetch("http://localhost:8000/cart", {
-                            method: "GET",
-                            headers: {
-                                "Content-Type": "application/json",
-
-                            },
-                            cache: "no-store",
-                            credentials: "include"
-                        });
-
-                        json = await res.json();
-                    }
-                }
-
-                if (!res.ok) setCartData([]);
-
-                const result = cartDataSchema.safeParse(json);
-
-                if (!result.success) {
-                    return setCartData([])
-                }
-
-                return setCartData(result.data);
-            } catch (err) {
-                console.error(err);
-                return setCartData([]);
-            }
-        }
-
-        fetchCartData();
-    }, [])
+        if (data === null) return;
+        
+       setCartData(data)
+    }, [data])
 
     const {
         isSuccess,
@@ -106,7 +61,7 @@ export default function CartClient() {
         try {
             const result = await sendRequestAndGetResponse({
                 method: "DELETE",
-                url: `http://localhost:8000/cart/${id}`
+                url: `${process.env.NEXT_PUBLIC_API_URL}/cart/${id}`
             });
 
             setIsSuccess(result.isSuccess);
@@ -133,7 +88,7 @@ export default function CartClient() {
         try {
             const result = await sendRequestAndGetResponse({
                 method: "PATCH",
-                url: `http://localhost:8000/cart/${id}/${action}`
+                url: `${process.env.NEXT_PUBLIC_API_URL}/cart/${id}/${action}`
             });
 
             setIsSuccess(result.isSuccess);
@@ -178,7 +133,7 @@ export default function CartClient() {
         try {
             const result = await sendRequestAndGetResponse({
                 method: "PATCH",
-                url: `http://localhost:8000/cart/${id}`
+                url: `${process.env.NEXT_PUBLIC_API_URL}/cart/${id}`
             });
 
             setIsSuccess(result.isSuccess);
@@ -213,7 +168,7 @@ export default function CartClient() {
         try {
             const result = await sendRequestAndGetResponse({
                 method: "PATCH",
-                url: `http://localhost:8000/cart/selection/${action}`
+                url: `${process.env.NEXT_PUBLIC_API_URL}/cart/selection/${action}`
             });
 
             setIsSuccess(result.isSuccess);
@@ -252,7 +207,7 @@ export default function CartClient() {
 
         try {
             await sendRequestAndGetResponse({
-                url: "http://localhost:8000/checkout",
+                url: `${process.env.NEXT_PUBLIC_API_URL}/checkout`,
                 method: "POST",
                 body: selectedCartItems
             });

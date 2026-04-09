@@ -1,78 +1,30 @@
 "use client"
 import Navigation from "./Link";
 import { useState, useEffect } from "react"
-import Link from "next/link"
 import { usePathname } from "next/navigation";
-import { redirect } from "next/navigation";
 import StatusMessage from "@/app/components/shared/StatusMessageClient";
 import useStatusMessage from "../../hooks/useStatusMessage";
 import sendRequestAndGetResponse from "@/app/lib/sendRequest";
 import { usernameDataSchema } from "@/app/schemas/userProfile";
-import { expiredSchema } from "@/app/schemas/backendResponse";
 import Logout from "./Logout";
+import useClientFetch from "@/app/hooks/useClientFetch";
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [username, setUsername] = useState<string>("Guest");
     const pathname = usePathname();
 
+    const { data, error } = useClientFetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/me`,
+        "GET",
+        usernameDataSchema
+    )
+
     useEffect(() => {
-        async function fetchUsernameData() {
-            try {
-                let res = await fetch("http://localhost:8000/auth/me", {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    cache: "no-store",
-                    credentials: "include"
-                });
+        if (data === null) return;
 
-                let json: unknown = await res.json();
-
-                if (res.status === 401) redirect("/unauthorized");
-
-                if (res.status === 403) {
-                    const result = expiredSchema.safeParse(json);
-
-                    if (result.success && result.data.error_code === "EXPIRED_ACCESS_TOKEN") {
-
-                        await fetch("http://localhost:8000/auth/refresh", {
-                            method: "POST",
-                            credentials: "include"
-                        });
-
-                        res = await fetch("http://localhost:8000/auth/me", {
-                            method: "GET",
-                            headers: {
-                                "Content-Type": "application/json",
-
-                            },
-                            cache: "no-store",
-                            credentials: "include"
-                        });
-
-                        json = await res.json();
-                    }
-                }
-
-                if (!res.ok) setUsername("Guest");
-
-                const result = usernameDataSchema.safeParse(json);
-
-                if (!result.success) {
-                    return setUsername("Guest")
-                }
-
-                return setUsername(result.data.username)
-            } catch (err) {
-                console.error(err);
-                return setUsername("Guest")
-            }
-        }
-
-        fetchUsernameData();
-    }, [])
+       setUsername(data.username)
+    }, [data])
 
     useEffect(() => {
         setIsOpen(false);
@@ -83,7 +35,7 @@ export default function Navbar() {
     async function logout() {
         const res = await sendRequestAndGetResponse({
             method: "POST",
-            url: "http://localhost:8000/auth/logout"
+            url: `${process.env.NEXT_PUBLIC_API_URL}/auth/logout`
         });
 
         setIsOpen(false);

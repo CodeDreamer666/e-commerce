@@ -4,7 +4,7 @@ import ShopClient from "./pageClient";
 
 export default async function Shop() {
   const productsData = await fetchAndValidateData({
-    url: "http://localhost:8000/products",
+    url: `${process.env.NEXT_PUBLIC_API_URL}/products`,
     idealSchema: fullProductData,
     option: "ISR"
   });

@@ -20,7 +20,7 @@ export default function ShippingOption() {
     const { setRefresh } = useRefresh();
 
     const { error, data } = useClientFetch<DeliveryPayment, unknown>(
-        "http://localhost:8000/checkout/delivery-payment",
+        `${process.env.NEXT_PUBLIC_API_URL}/checkout/delivery-payment`,
         "GET",
         deliveryPayment
     )
@@ -59,7 +59,7 @@ export default function ShippingOption() {
 
         try {
             const result = await sendRequestAndGetResponse({
-                url: "http://localhost:8000/checkout/delivery-payment",
+                url: `${process.env.NEXT_PUBLIC_API_URL}/checkout/delivery-payment`,
                 method: "POST",
                 body: {
                     deliveryMethod,

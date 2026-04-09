@@ -51,7 +51,7 @@ export default function SignIn() {
 
         const result = await sendRequestAndGetResponse({
             method: "POST",
-            url: `http://localhost:8000/auth/${action}`,
+            url: `${process.env.NEXT_PUBLIC_API_URL}/auth/${action}`,
             body: payload,
         });
 

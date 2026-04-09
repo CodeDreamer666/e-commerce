@@ -26,7 +26,7 @@ export default function ReviewOrder() {
     } = useStatusMessage();
 
     const { data, error } = useClientFetch(
-        "http://localhost:8000/checkout",
+        `${process.env.NEXT_PUBLIC_API_URL}/checkout`,
         "GET",
         order
     )
@@ -38,7 +38,7 @@ export default function ReviewOrder() {
     async function placeOrder() {
         try {
             const result = await sendRequestAndGetResponse({
-                url: "http://localhost:8000/checkout/place-order",
+                url: `${process.env.NEXT_PUBLIC_API_URL}/checkout/place-order`,
                 method: "POST"
             });
 

@@ -11,7 +11,7 @@ export default function OrderHistory() {
     const [orders, setOrders] = useState<Orders | null>(null)
 
     const { data, error } = useClientFetch(
-        "http://localhost:8000/orders",
+        `${process.env.NEXT_PUBLIC_API_URL}/orders`,
         "GET",
         ordersSchema
     )

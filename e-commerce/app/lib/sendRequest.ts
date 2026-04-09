@@ -2,7 +2,7 @@ import { messageSchema, errorSchema, expiredSchema } from "@/app/schemas/backend
 
 type UrlCategory = "auth" | "products" | "reviews" | "cart" | "checkout" | "shipping"
 
-type UrlBaseForm = `http://localhost:8000/${UrlCategory}`
+type UrlBaseForm = `${string}/${UrlCategory}`
 
 type Url = `${UrlBaseForm}${string}`
 
@@ -41,7 +41,7 @@ export default async function sendRequestAndGetResponse<BodyType>(
             const isExpired = expiredSchema.safeParse(data);
 
             if (isExpired.success && isExpired.data.error_code === "EXPIRED_ACCESS_TOKEN") {
-                await fetch("http://localhost:8000/auth/refresh", {
+                await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`, {
                     method: "POST",
                     credentials: "include"
                 });
